@@ -66,10 +66,17 @@ if (has("termguicolors"))
  set termguicolors
 endif
 syntax enable
-colorscheme gruvbox  			"elegir tema {gruvbox, dracula}
-let g:gruvbox_contrast_dark = "hard"
+colorscheme dracula  			"elegir tema {gruvbox, dracula}
+" let g:gruvbox_contrast_dark = "hard"
 
-" highlight Normal guibg=none
+" if &colorscheme == "dracula" 
+nnoremap <C-A-t> :AirlineTheme gruvbox <bar> colorscheme gruvbox<CR>
+nnoremap <C-T-t> :AirlineTheme gruvbox <bar> colorscheme gruvbox<CR>
+
+" elseif :colorscheme == "gruvbox"
+" 		nnoremap <C-A-t> :AirlineTheme dracula <bar> colorscheme dracula<CR>
+" endif
+" highlight Normal guibg=none    "transparencia
 
 "colorear tag en javascript
 let g:vim_jsx_pretty_highlight_close_tag = 1
@@ -103,7 +110,7 @@ let g:user_emmet_leader_key=',' 	"mapeando la tecla lider por una coma, con esto
 "configuracion de vim-airline
 let g:airline#extensions#tabline#enabled = 1	"muestra la linea de pestaña en la que estamos buffer
 let g:airline#extensions#tabline#formatter = 'unique_tail'	"muestra solo el nombre del archivo que estamos modificando
-let g:airline_theme='gruvbox'	"el tema de airline {violet, onedark, dracula, gruvbox}
+let g:airline_theme='dracula'	"el tema de airline {violet, onedark, dracula, gruvbox}
 
 "::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -338,3 +345,12 @@ augroup END
 
 " Definir plegado en sintaxis
 :setlocal foldmethod=syntax
+
+
+" Prettier para formatear codigo js
+command! -nargs=0 Prettier :CocCommand prettier.forceFormatDocument
+
+vmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+
