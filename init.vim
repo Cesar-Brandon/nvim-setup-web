@@ -3,7 +3,7 @@
 call plug#begin('~/AppData/Local/nvim/plugged')
 
 "APARIENCIA
-Plug 'dracula/vim' 			" tema dracula
+Plug 'dracula/vim', { 'as': 'dracula' } 			" tema dracula
 Plug 'morhetz/gruvbox' 	" tema gruvbox
 
 Plug 'preservim/nerdtree'		" explorador de archivos
@@ -22,7 +22,7 @@ Plug 'vwxyutarooo/nerdtree-devicons-syntax' "colores de iconos
 
 "AUTOCOMPLETADO
 Plug 'neoclide/coc.nvim', {'branch': 'release'}  "autocompletado de coc
-let g:coc_global_extensions = ['coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-tsserver']
+let g:coc_global_extensions = ['coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-tsserver', 'coc-eslint']
 
 Plug 'mattn/emmet-vim' 			"emmet para diseño web
 Plug 'alvan/vim-closetag' 		"cerrar etiquetas
@@ -38,6 +38,13 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } "busqueda de archivos
 Plug 'junegunn/fzf.vim'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}  "multiples cursores
 
+if has('nvim') || has('patch-8.0.902') 							"marcador de lineas(agregamos-eliminamos)
+  Plug 'mhinz/vim-signify'
+else
+  Plug 'mhinz/vim-signify', { 'branch': 'legacy' }
+endif
+
+Plug 'easymotion/vim-easymotion'  									"moverse a una posicion con comandos
 
 "BARRA
 Plug 'vim-airline/vim-airline'		"diseño de la barra en la cual se muestran los modos, la linea, etc.
@@ -59,6 +66,7 @@ set sw=4 				"la indentación genera 4 espacios
 set nowrap				"el texto en una linea no baja a la siguiente, solo continua en la misma hasta el infinito.
 "set noswapfile				"para evitar el mensaje que sale al abrir algunos archivos sobre swap.
 set clipboard=unnamed			"para poder utilizar el portapapeles del sistema operativo 'esto permite poder copiar y pegar desde cualquier parte a nvim y viceversa.	
+let mapleader = "\ " 			" tecla leader
 
 
 "configuracion de tema
@@ -69,13 +77,6 @@ syntax enable
 colorscheme dracula  			"elegir tema {gruvbox, dracula}
 " let g:gruvbox_contrast_dark = "hard"
 
-" if &colorscheme == "dracula" 
-nnoremap <C-A-t> :AirlineTheme gruvbox <bar> colorscheme gruvbox<CR>
-nnoremap <C-T-t> :AirlineTheme gruvbox <bar> colorscheme gruvbox<CR>
-
-" elseif :colorscheme == "gruvbox"
-" 		nnoremap <C-A-t> :AirlineTheme dracula <bar> colorscheme dracula<CR>
-" endif
 " highlight Normal guibg=none    "transparencia
 
 "colorear tag en javascript
@@ -354,3 +355,28 @@ vmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
 
+" Actualizacion asincrona de signify
+set updatetime=100
+
+" CONFIGURANDO EASYMOTION ::::::::::
+" Tecla leader de easymotion
+map <Leader> <Plug>(easymotion-prefix)
+
+
+" Configurando easymotion
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+" Jump to anywhere you want with minimal keystrokes, with just one key binding.
+" `s{char}{label}`
+nmap <Leader><Leader>s <Plug>(easymotion-overwin-f)
+" or
+" `s{char}{char}{label}`
+" Need one more keystroke, but on average, it may be more comfortable.
+nmap <Leader><Leader>s <Plug>(easymotion-overwin-f2)
+
+" Turn on case-insensitive feature
+let g:EasyMotion_smartcase = 1
+
+" JK motions: Line motions
+map <Leader>j <Plug>(easymotion-j)
+map <Leader>k <Plug>(easymotion-k)
