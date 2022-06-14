@@ -5,6 +5,7 @@ call plug#begin('~/AppData/Local/nvim/plugged')
 "APARIENCIA
 Plug 'dracula/vim', { 'as': 'dracula' } 			" tema dracula
 Plug 'morhetz/gruvbox' 	" tema gruvbox
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' } 		"tema tokyonight
 
 Plug 'preservim/nerdtree'		" explorador de archivos
 Plug 'ryanoasis/vim-devicons'		" iconos
@@ -22,7 +23,7 @@ Plug 'vwxyutarooo/nerdtree-devicons-syntax' "colores de iconos
 
 "AUTOCOMPLETADO
 Plug 'neoclide/coc.nvim', {'branch': 'release'}  "autocompletado de coc
-let g:coc_global_extensions = ['coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-tsserver', 'coc-eslint']
+let g:coc_global_extensions = ['coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-tsserver', 'coc-eslint', 'coc-cssmodules', 'coc-snippets']
 
 Plug 'mattn/emmet-vim' 			"emmet para diseño web
 Plug 'alvan/vim-closetag' 		"cerrar etiquetas
@@ -32,24 +33,19 @@ Plug 'jiangmiao/auto-pairs'		"autocompletado de llaves, corchetes, etc.
 Plug 'leafgarland/typescript-vim' 	"compatibilidad con typescript
 Plug 'peitalin/vim-jsx-typescript'
 
-
 "HERRAMIENTAS
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } "busqueda de archivos
 Plug 'junegunn/fzf.vim'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}  "multiples cursores
 
-if has('nvim') || has('patch-8.0.902') 							"marcador de lineas(agregamos-eliminamos)
-  Plug 'mhinz/vim-signify'
-else
-  Plug 'mhinz/vim-signify', { 'branch': 'legacy' }
-endif
+Plug 'mhinz/vim-signify' 														"Mostrar cambios de git
 
 Plug 'easymotion/vim-easymotion'  									"moverse a una posicion con comandos
 
 "BARRA
-Plug 'vim-airline/vim-airline'		"diseño de la barra en la cual se muestran los modos, la linea, etc.
-Plug 'vim-airline/vim-airline-themes'	"temas para el vim-airline
 Plug 'christoomey/vim-tmux-navigator'	"poder navegar entre archivos abiertos
+Plug 'nvim-lualine/lualine.nvim' 										"Lualine
+Plug 'akinsho/bufferline.nvim', { 'tag': 'v2.*' } 	"BufferLine
 
 call plug#end()
 
@@ -74,7 +70,7 @@ if (has("termguicolors"))
  set termguicolors
 endif
 syntax enable
-colorscheme dracula  			"elegir tema {gruvbox, dracula}
+colorscheme tokyonight  			"elegir tema {gruvbox, dracula, tokyonight}
 " let g:gruvbox_contrast_dark = "hard"
 
 " highlight Normal guibg=none    "transparencia
@@ -87,6 +83,9 @@ let g:vim_jsx_pretty_highlight_close_tag = 1
 "mapeo de buffer
 nmap <c-e> :bn<CR>
 nmap <c-d> :bd<CR>
+
+"Navegar entre buffers
+nnoremap<c-b> :Buffers<CR>
 
 "ventana doble
 nnoremap <c-z> :vsp<CR>
@@ -107,12 +106,59 @@ imap <c-a> <c-o>:wa<CR>
 "configuracion de emmet-vim
 let g:user_emmet_leader_key=',' 	"mapeando la tecla lider por una coma, con esto se completa los tag con doble coma.
 
+"configuracion de signify
 
-"configuracion de vim-airline
-let g:airline#extensions#tabline#enabled = 1	"muestra la linea de pestaña en la que estamos buffer
-let g:airline#extensions#tabline#formatter = 'unique_tail'	"muestra solo el nombre del archivo que estamos modificando
-let g:airline_theme='dracula'	"el tema de airline {violet, onedark, dracula, gruvbox}
+"::::CONFIGURACION DE LUALINE
+lua << END
+require('lualine').setup {
+  options = {
+    icons_enabled = true,
+    theme = 'auto',
+    component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''},
+    disabled_filetypes = {},
+    always_divide_middle = true,
+    globalstatus = false,
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_c = {'filename'},
+    lualine_x = {'filetype'},
+    lualine_y = {'progress'},
+    lualine_z = {'location'}
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {'filename'},
+    lualine_x = {'location'},
+    lualine_y = {},
+    lualine_z = {}
+  },
+	tabline = {
+			  lualine_a = {'buffers'},
+  lualine_b = {},
+  lualine_c = {},
+  lualine_x = {},
+  lualine_y = {},
+  lualine_z = {}
+			},
+  extensions = {}
+}
 
+END
+
+" Example config in VimScript
+let g:tokyonight_italic_functions = 1
+
+" Change the "hint" color to the "orange" color, and make the "error" color bright red
+let g:tokyonight_colors = {
+  \ 'hint': 'orange',
+  \ 'error': '#ff0000'
+\ }
+
+colorscheme tokyonight
 "::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 "configuracion de explorador de archivos nerdtree
@@ -161,8 +207,8 @@ let g:fzf_action = {
   \}
 
 let g:fzf_colors =
-\ { 'bg':      ['bg', 'Comment'],
-  \ 'border':  ['fg', 'Statement']
+\ { 'bg':      ['bg', 'Normal'],
+  \ 'border':  ['fg', 'CursorLine']
   \ }
 
 let $FZF_DEFAULT_COMMAND = 'ag -g ""'
@@ -380,3 +426,12 @@ let g:EasyMotion_smartcase = 1
 " JK motions: Line motions
 map <Leader>j <Plug>(easymotion-j)
 map <Leader>k <Plug>(easymotion-k)
+
+
+
+
+"bufferlilne
+set termguicolors
+lua << EOF
+require("bufferline").setup{}
+EOF
