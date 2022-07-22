@@ -8,7 +8,8 @@ Plug 'morhetz/gruvbox' 	" tema gruvbox
 Plug 'folke/tokyonight.nvim', { 'branch': 'main' } 		"tema tokyonight
 
 Plug 'preservim/nerdtree'		" explorador de archivos
-Plug 'ryanoasis/vim-devicons'		" iconos
+Plug 'ryanoasis/vim-devicons'		          	"Iconos sin colores
+Plug 'vwxyutarooo/nerdtree-devicons-syntax' "Iconos en NERDTree
 
 Plug 'sheerun/vim-polyglot' 		"pintado de lenguajes
 Plug 'mxw/vim-jsx'                "resaltado de sintaxis : JSX
@@ -19,7 +20,6 @@ Plug 'Yggdroot/indentLine' 		"indentacion
 
 Plug 'maxmellon/vim-jsx-pretty' 	"sangria jsx
 
-Plug 'vwxyutarooo/nerdtree-devicons-syntax' "colores de iconos
 
 "AUTOCOMPLETADO
 Plug 'neoclide/coc.nvim', {'branch': 'release'}  "autocompletado de coc
@@ -70,7 +70,7 @@ if (has("termguicolors"))
  set termguicolors
 endif
 syntax enable
-colorscheme tokyonight  			"elegir tema {gruvbox, dracula, tokyonight}
+colorscheme tokyonight 			"elegir tema {gruvbox, dracula, tokyonight}
 " let g:gruvbox_contrast_dark = "hard"
 
 " highlight Normal guibg=none    "transparencia
@@ -106,7 +106,11 @@ imap <c-a> <c-o>:wa<CR>
 "configuracion de emmet-vim
 let g:user_emmet_leader_key=',' 	"mapeando la tecla lider por una coma, con esto se completa los tag con doble coma.
 
-"configuracion de signify
+"Configurando Signify { cambios de git }
+let g:signify_sign_add               = '▎ '
+let g:signify_sign_delete            = '▎ '
+let g:signify_sign_delete_first_line = '▎ '
+let g:signify_sign_change            = '▎ '
 
 "::::CONFIGURACION DE LUALINE
 lua << END
@@ -137,13 +141,13 @@ require('lualine').setup {
     lualine_z = {}
   },
 	tabline = {
-			  lualine_a = {'buffers'},
-  lualine_b = {},
-  lualine_c = {},
-  lualine_x = {},
-  lualine_y = {},
-  lualine_z = {}
-			},
+			lualine_a = {'buffers'},
+			lualine_b = {},
+			lualine_c = {},
+			lualine_x = {},
+			lualine_y = {},
+			lualine_z = {}
+	},
   extensions = {}
 }
 
@@ -158,7 +162,6 @@ let g:tokyonight_colors = {
   \ 'error': '#ff0000'
 \ }
 
-colorscheme tokyonight
 "::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 "configuracion de explorador de archivos nerdtree
